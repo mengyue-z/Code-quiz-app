@@ -2,6 +2,7 @@
 
 // timer function
 var secondsLeft = 90;
+var totalScore =0;
 
 function setTime() {
   var timerInterval = setInterval(function () {
@@ -22,22 +23,25 @@ function sendMessage() {
 }
 
 // user clicks "start quiz" button and the quiz will start
-
+var qIndex = 0;
 $("#start-button").on("click", function () {
   $("#start-container").attr("hidden", true);
   $("#quiz-container").removeAttr("hidden");
-  showQuestions(questionList[0]);
+  showQuestions(questionList[qIndex]);
   // setTime()
 });
 
-// start quiz function 
-function startQuiz() {
-
-}
-
 // set next question
 function setNextQuestion() {
-
+  qIndex ++;
+  console.log(qIndex);
+  console.log(questionList.length)
+  if (qIndex >= questionList.length) {
+    getScore();
+  } else {
+  resetQuestion()
+  showQuestions(questionList[qIndex]);
+   }
 }
 
 // show questions
@@ -59,16 +63,54 @@ function showQuestions(question) {
   }
 }
 
-$(".answer-btn").on("click", function () {
-  console.log(this);
-  var result = $("<div>");
-  result.text($(this).attr("correct"));
-  $("#result").text(result);
+
+function resetQuestion() {
+  $("#question").empty();
+  $("#answers").empty();
+  $("#result").empty();
+}
+
+$(document).on('click','.answer-btn',function(e) {
+  var result = $(this).attr("correct");
+  $("#result").text(result+"!");
+  if (result == "Correct") {
+    totalScore+=20;
+  }
+  setNextQuestion()
+});
+console.log(totalScore);
+// Score Page 
+
+function getScore() {
+  $("#start-container").attr("hidden", true);
+  $("#quiz-container").attr("hidden", true);
+  $("#score-container").removeAttr("hidden");
+  var score = $("<h2>");
+  score.addClass("score");
+  score.text("Your score:" + totalScore);
+  var userIni = $("<input>");
+  userIni.addClass("inital");
+  userIni.text("Please enter your initial here:");
+  $("#score").append(score);
+  $("#initial").append(userIni);
+}
+
+// restart quiz function 
+function restartQuiz() {
+
+}
+
+// high score page 
+$("#submit").on("click", function () {
+  goToHighScore();
 });
 
-
-
-
+function goToHighScore() {
+  $("#start-container").attr("hidden", true);
+  $("#quiz-container").attr("hidden", true);
+  $("#score-container").attr("hidden", true);
+  $("#highscore-container").removeAttr("hidden");
+}
 // question list Array
 
 var questionList = [
@@ -82,7 +124,7 @@ var questionList = [
     ]
   },
   {
-    question: "What is the correct way to call the random method on the Math global obWhat is the correct way to call a string’s built-in method?",
+    question: "What is the correct way to call a string’s built-in method?",
     answers: [
       { text: "'String'.toUpperCase", correct: false },
       { text: "toUpperCase('String')", correct: false },

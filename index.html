@@ -15,9 +15,9 @@
 <body>
     <main>
         <div id="start-container">
-            <header class="row"> 
+            <header class="row">
                 <h1 id="title" class="m-auto">Code Quiz</h1>
-            </header> 
+            </header>
             <section id="introduction">
                 <p>This quiz is about HTML,CSS and Javascript.
                     <br>You will have 1 minute and 30 seconds to finish this Quiz.
@@ -26,23 +26,39 @@
                     <br>Once you are ready, please click "Start Quiz" to start.
                 </p>
             </section>
-            <div id="start-button" class="row"> 
+            <div id="start-button" class="row">
                 <button type="button" class="btn btn-lg center m-auto">Start Quiz</button>
             </div>
         </div>
 
-<!-- show this container after user click start -->
-        <div id="quiz-container" class="hide" hidden>
+        <!-- show this container after user click start -->
+        <div id="quiz-container" hidden>
             <header class="row">
                 <h1 id="title" class="m-auto">Code Quiz</h1>
             </header>
-            <div id="question" class = "mr-auto">Question</div>
-            <div id="answers" class = "mr-auto answerBtn"></div>
+            <div id="question" class="mr-auto">Question</div>
+            <div id="answers" class="mr-auto answerBtn"></div>
             <div id="result"></div>
             <div id="timer" class="ml-auto"></div>
             <section id="introduction">
         </div>
 
+        <!-- show this container after finish the quiz -->
+        <div id="score-container" hidden>
+            <div id="score"></div>
+            <div id="initial">Please enter you inital here: </div>
+            <button id="submit" type="button" class="btn btn-lg center m-auto">Submit</button>
+        </div>
+        <!-- Highscore page -->
+        <div id="highscore-container" hidden>
+            <header class="row">
+                <h1 id="title" class="m-auto">Highscores</h1>
+            </header>
+            <div id="highscores">
+                <button type="button" class="btn btn-lg center m-auto">Go Back</button>
+                <button type="button" class="btn btn-lg center m-auto">Clear Highscore</button>
+            </div>
+        </div>
     </main>
 
 

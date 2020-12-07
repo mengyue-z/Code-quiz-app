@@ -26,7 +26,7 @@ h1 {
     margin:auto;
     padding-top: 2rem;
 }
-#start-container, #quiz-container{
+#start-container, #quiz-container, #score-container, #highscore-container{
     text-align: center;
     background-color:#84a9ac;
     margin: 100px;
@@ -55,3 +55,18 @@ h1 {
     color: lightgray;
   }
 
+#score {
+    margin: 20px;
+}
+
+#initial {
+    margin:20px;
+}
+
+.initial {
+    margin-left: 20px;
+}
+
+#highscores {
+    margin-top:50px;
+}
