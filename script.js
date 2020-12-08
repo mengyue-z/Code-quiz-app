@@ -6,32 +6,32 @@ var totalScore =0;
 var highScores = [];
 var savedResults = localStorage.getItem("highScores");
 
-function setTime() {
-  var timerInterval = setInterval(function () {
-    secondsLeft--;
-    $("#timer").text("Time Left: " + secondsLeft);
-
-    if (secondsLeft === 0) {
-      clearInterval(timerInterval);
-      sendMessage();
-    }
-  }, 1000);
-}
 
 // sendMessage when time is up
 function sendMessage() {
+  clearInterval(timerInterval);
   alert("time is up!")
+  getScore();
 }
 
 // user clicks "start quiz" button and the quiz will start
 var qIndex = 0;
 $("#start-button").on("click", function () {
+  // timer
+  timerInterval = setInterval(function () {
+    secondsLeft--;
+   $("#timer").text("Time Left: " + secondsLeft);
+   
+   if (secondsLeft === 0) {
+   sendMessage();
+   }
+  }, 1000);
+  totalScore=0;
   resetQuestion()
   $("#start-container").attr("hidden", true);
   $("#quiz-container").removeAttr("hidden");
   qIndex=0;
   showQuestions(questionList[qIndex]);
-  // setTime()
 });
 
 // set next question
@@ -79,13 +79,13 @@ $(document).on('click','.answer-btn',function(e) {
   if (result == "Correct") {
     totalScore+=20;
   }
-  setNextQuestion();
-  // setTimeout(setNextQuestion,1000);
-  // $(".answer-btn").attr("disabled","disabled");
+   setTimeout(setNextQuestion,1000);
+  $(".answer-btn").attr("disabled","disabled");
 });
 
 // Score and inital input Page 
 function getScore() {
+  clearInterval(timerInterval);
   $("#start-container").attr("hidden", true);
   $("#quiz-container").attr("hidden", true);
   $("#score-container").removeAttr("hidden");
@@ -140,11 +140,11 @@ function appendHighscores(){
   var scoreText = localStorage.getItem("highScores");
   var scoreList = JSON.parse(scoreText);
   for (scoreIndex=0; scoreIndex<scoreList.length;scoreIndex++){
-    var scoreDiv = $("<h2>");
-    scoreDiv.text("Inital: "+ scoreList[scoreIndex].userInitial +"   Score: " + scoreList[scoreIndex].totalScore);
-    $("#score-list").append(scoreDiv);
+  var scoreDiv = $("<h2>");
+  scoreDiv.text("Inital: "+ scoreList[scoreIndex].userInitial +"   Score: " + scoreList[scoreIndex].totalScore);
+  $("#score-list").append(scoreDiv);
   }
-  console.log(scoreList[0].totalScore);
+
 }
 
 // clear highscores click event
@@ -153,15 +153,6 @@ $("#clear-highscores").on("click", function () {
   $("#score-list").empty();
 });
 
-// go back to start quiz page
-$("#go-back").on("click", function () {
-  $("#start-container").removeAttr("hidden");
-  $("#quiz-container").attr("hidden", true);
-  $("#score-container").attr("hidden", true);
-  $("#highscore-container").attr("hidden", true);
-  $(".score").empty();
-  $(".initial").remove();
-});
 
 // question list Array
 var questionList = [
