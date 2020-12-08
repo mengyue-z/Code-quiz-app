@@ -3,6 +3,8 @@
 // timer function
 var secondsLeft = 90;
 var totalScore =0;
+var highScores = [];
+var savedResults = localStorage.getItem("highScores");
 
 function setTime() {
   var timerInterval = setInterval(function () {
@@ -13,7 +15,6 @@ function setTime() {
       clearInterval(timerInterval);
       sendMessage();
     }
-
   }, 1000);
 }
 
@@ -25,8 +26,10 @@ function sendMessage() {
 // user clicks "start quiz" button and the quiz will start
 var qIndex = 0;
 $("#start-button").on("click", function () {
+  resetQuestion()
   $("#start-container").attr("hidden", true);
   $("#quiz-container").removeAttr("hidden");
+  qIndex=0;
   showQuestions(questionList[qIndex]);
   // setTime()
 });
@@ -63,7 +66,7 @@ function showQuestions(question) {
   }
 }
 
-
+// reset question
 function resetQuestion() {
   $("#question").empty();
   $("#answers").empty();
@@ -76,11 +79,12 @@ $(document).on('click','.answer-btn',function(e) {
   if (result == "Correct") {
     totalScore+=20;
   }
-  setNextQuestion()
+  setNextQuestion();
+  // setTimeout(setNextQuestion,1000);
+  // $(".answer-btn").attr("disabled","disabled");
 });
-console.log(totalScore);
-// Score Page 
 
+// Score and inital input Page 
 function getScore() {
   $("#start-container").attr("hidden", true);
   $("#quiz-container").attr("hidden", true);
@@ -89,30 +93,77 @@ function getScore() {
   score.addClass("score");
   score.text("Your score:" + totalScore);
   var userIni = $("<input>");
-  userIni.addClass("inital");
+  userIni.addClass("initial");
   userIni.text("Please enter your initial here:");
   $("#score").append(score);
   $("#initial").append(userIni);
 }
 
-// restart quiz function 
-function restartQuiz() {
-
+// function to sort highscores
+function compare(a,b){
+  if(a.totalScore > b.totalScore){
+    return -1;
+  } else if (a.totalScore == b.totalScore) {
+return 0
+  } else {
+    return 1;
+  }
 }
 
 // high score page 
 $("#submit").on("click", function () {
+  var userInitial = $(".initial").val();
+  var newHighScore = {userInitial: userInitial,totalScore: totalScore};
+  if(savedResults != null){
+    var savedResultsArray = JSON.parse(savedResults);
+    savedResultsArray.push(newHighScore);
+    savedResultsArray.sort(compare);
+    localStorage.setItem("highScores",JSON.stringify(savedResultsArray));
+  } else {
+    highScores.push(newHighScore);
+    highScores.sort(compare);
+    localStorage.setItem("highScores",JSON.stringify(highScores));
+  }
   goToHighScore();
 });
-
+console.log(highScores);
 function goToHighScore() {
   $("#start-container").attr("hidden", true);
   $("#quiz-container").attr("hidden", true);
   $("#score-container").attr("hidden", true);
   $("#highscore-container").removeAttr("hidden");
+  appendHighscores();
 }
-// question list Array
 
+// append highscores function
+function appendHighscores(){
+  var scoreText = localStorage.getItem("highScores");
+  var scoreList = JSON.parse(scoreText);
+  for (scoreIndex=0; scoreIndex<scoreList.length;scoreIndex++){
+    var scoreDiv = $("<h2>");
+    scoreDiv.text("Inital: "+ scoreList[scoreIndex].userInitial +"   Score: " + scoreList[scoreIndex].totalScore);
+    $("#score-list").append(scoreDiv);
+  }
+  console.log(scoreList[0].totalScore);
+}
+
+// clear highscores click event
+$("#clear-highscores").on("click", function () {
+  localStorage.clear();
+  $("#score-list").empty();
+});
+
+// go back to start quiz page
+$("#go-back").on("click", function () {
+  $("#start-container").removeAttr("hidden");
+  $("#quiz-container").attr("hidden", true);
+  $("#score-container").attr("hidden", true);
+  $("#highscore-container").attr("hidden", true);
+  $(".score").empty();
+  $(".initial").remove();
+});
+
+// question list Array
 var questionList = [
   {
     question: "What is the correct way to call the random method on the Math global object?",
