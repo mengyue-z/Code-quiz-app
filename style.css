@@ -71,3 +71,27 @@ h1 {
 #highscores {
     margin-top:50px;
 }
+
+#score-list {
+    margin:20px;
+    margin-bottom: 50px;
+}
+
+#go-back{
+    margin-top:50px;
+}
+
+#clear-highscores {
+    margin-top:50px;
+}
+
+#timer {
+    margin:20px;
+    background-color: #e4e3e3;
+    width:10%;
+    border-radius: 25px;
+}
+
+#question {
+    font-size: 18px;
+}

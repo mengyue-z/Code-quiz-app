@@ -2,7 +2,7 @@
 
 // timer function
 var secondsLeft = 90;
-var totalScore =0;
+var totalScore = 0;
 var highScores = [];
 var savedResults = localStorage.getItem("highScores");
 
@@ -20,31 +20,31 @@ $("#start-button").on("click", function () {
   // timer
   timerInterval = setInterval(function () {
     secondsLeft--;
-   $("#timer").text("Time Left: " + secondsLeft);
-   
-   if (secondsLeft === 0) {
-   sendMessage();
-   }
+    $("#timer").text("Time Left: " + secondsLeft);
+
+    if (secondsLeft === 0) {
+      sendMessage();
+    }
   }, 1000);
-  totalScore=0;
+  totalScore = 0;
   resetQuestion()
   $("#start-container").attr("hidden", true);
   $("#quiz-container").removeAttr("hidden");
-  qIndex=0;
+  qIndex = 0;
   showQuestions(questionList[qIndex]);
 });
 
 // set next question
 function setNextQuestion() {
-  qIndex ++;
+  qIndex++;
   console.log(qIndex);
   console.log(questionList.length)
   if (qIndex >= questionList.length) {
     getScore();
   } else {
-  resetQuestion()
-  showQuestions(questionList[qIndex]);
-   }
+    resetQuestion()
+    showQuestions(questionList[qIndex]);
+  }
 }
 
 // show questions
@@ -73,14 +73,14 @@ function resetQuestion() {
   $("#result").empty();
 }
 
-$(document).on('click','.answer-btn',function(e) {
+$(document).on('click', '.answer-btn', function (e) {
   var result = $(this).attr("correct");
-  $("#result").text(result+"!");
+  $("#result").text(result + "!");
   if (result == "Correct") {
-    totalScore+=20;
+    totalScore += 20;
   }
-   setTimeout(setNextQuestion,1000);
-  $(".answer-btn").attr("disabled","disabled");
+  setTimeout(setNextQuestion, 1000);
+  $(".answer-btn").attr("disabled", "disabled");
 });
 
 // Score and inital input Page 
@@ -100,11 +100,11 @@ function getScore() {
 }
 
 // function to sort highscores
-function compare(a,b){
-  if(a.totalScore > b.totalScore){
+function compare(a, b) {
+  if (a.totalScore > b.totalScore) {
     return -1;
   } else if (a.totalScore == b.totalScore) {
-return 0
+    return 0
   } else {
     return 1;
   }
@@ -113,16 +113,16 @@ return 0
 // high score page 
 $("#submit").on("click", function () {
   var userInitial = $(".initial").val();
-  var newHighScore = {userInitial: userInitial,totalScore: totalScore};
-  if(savedResults != null){
+  var newHighScore = { userInitial: userInitial, totalScore: totalScore };
+  if (savedResults != null) {
     var savedResultsArray = JSON.parse(savedResults);
     savedResultsArray.push(newHighScore);
     savedResultsArray.sort(compare);
-    localStorage.setItem("highScores",JSON.stringify(savedResultsArray));
+    localStorage.setItem("highScores", JSON.stringify(savedResultsArray));
   } else {
     highScores.push(newHighScore);
     highScores.sort(compare);
-    localStorage.setItem("highScores",JSON.stringify(highScores));
+    localStorage.setItem("highScores", JSON.stringify(highScores));
   }
   goToHighScore();
 });
@@ -136,13 +136,13 @@ function goToHighScore() {
 }
 
 // append highscores function
-function appendHighscores(){
+function appendHighscores() {
   var scoreText = localStorage.getItem("highScores");
   var scoreList = JSON.parse(scoreText);
-  for (scoreIndex=0; scoreIndex<scoreList.length;scoreIndex++){
-  var scoreDiv = $("<h2>");
-  scoreDiv.text("Inital: "+ scoreList[scoreIndex].userInitial +"   Score: " + scoreList[scoreIndex].totalScore);
-  $("#score-list").append(scoreDiv);
+  for (scoreIndex = 0; scoreIndex < scoreList.length; scoreIndex++) {
+    var scoreDiv = $("<h2>");
+    scoreDiv.text("Inital: " + scoreList[scoreIndex].userInitial + "   Score: " + scoreList[scoreIndex].totalScore);
+    $("#score-list").append(scoreDiv);
   }
 
 }
