@@ -78,6 +78,8 @@ $(document).on('click', '.answer-btn', function (e) {
   $("#result").text(result + "!");
   if (result == "Correct") {
     totalScore += 20;
+  } else {
+    secondsLeft-=10;
   }
   setTimeout(setNextQuestion, 1000);
   $(".answer-btn").attr("disabled", "disabled");
